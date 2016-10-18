@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhisland.main.apps.guanwang.dao.mybatis.NavigationMapper">
+	<resultMap id="BaseResultMap" type="Navigation">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cn_name" property="cnName" jdbcType="VARCHAR" />
+		<result column="en_name" property="enName" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="has_children" property="hasChildren" jdbcType="INTEGER" />
+		<result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+		<result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,cn_name,en_name,parent_id,has_children,link_url,sort,is_deleted,create_time,update_time
+	</sql>
+	<cache-ref namespace="com.zhisland.main.apps.guanwang.dao.mybatis.PageMapper"/>
+
+
+	<select id="getOne" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_navigation
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="getValidListByParentId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		tb_navigation
+		where parent_id = #{parentId,jdbcType=INTEGER}
+		and is_deleted=0
+		ORDER BY sort
+	</select>
+	
+	<select id="getByLinkUrl" resultMap="BaseResultMap"	>
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		tb_navigation
+		where link_url = #{linkUrl,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,34 @@
+#register-panel {
+	width: 430px;
+	margin: 100px auto;
+}
+
+.label-with label {
+	width: 72px;
+}
+
+.label-with .input-row .flex-cell {
+	margin-left: 100px;
+}
+
+#flex-cell-code {
+	margin-right: 125px;
+}
+
+#btn-code {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 15px;
+	height: 36px;
+	line-height: 36px;
+	width: 130px;
+}
+
+.button-container {
+}
+
+#btn-register {
+	margin-left: 100px;
+	width: 150px;
+}
