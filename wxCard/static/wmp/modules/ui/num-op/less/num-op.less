@@ -1,0 +1,24 @@
+.number-operator-container {
+	.minus, .plus {
+				display: inline-block;
+				width: 44px;
+				height: 44px;
+				vertical-align: middle;
+			    background-repeat: no-repeat;
+			    background-size: 100%;
+			    background-position: 0 -44px;
+
+			    &.disabled {
+			    	background-position: 0 0px;
+			    }
+			    &.pressed {		    	
+			    	background-position: 0 -88px;
+			    }
+	}
+	.minus {
+	    background-image: data-uri('@{static}/modules/ui/num-op/img/btn_minus.png');
+	}
+	.plus {
+	    background-image: data-uri('@{static}/modules/ui/num-op/img/btn_plus.png');
+	}
+}

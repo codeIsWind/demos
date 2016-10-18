@@ -1,0 +1,49 @@
+var gulp = require('gulp'),
+	less = require('gulp-less'),
+	rename = require('gulp-rename');
+
+/*
+ * 编译各页面less文件到css文件
+ * 将pagescript中每个页面的less文件生成css文件，
+ * 放置到原less文件夹的平级文件夹内.即如下结构。
+ * .
+ * ├── css
+ * │   └── main.css
+ * └── less
+ *     └── main.less
+ */
+gulp.task('less',function(obj){
+	return gulp.src('**/pagescript/**/less/main.less',{
+		base: ''
+	}).pipe(less({
+		modifyVars: {
+			static: '"E:/Yang-ZX-Card/wmp-webapp/src/main/webapp/WEB-INF/static/wmp"'
+		}
+	})).pipe(rename(function(path){
+		path.dirname = path.dirname.replace('less','css');
+		path.extname = '.css';
+	})).pipe(gulp.dest(''));
+});
+
+//var requirejsOptimize = require('gulp-requirejs-optimize');
+//gulp.task('default',function(){
+//	return gulp.src('**/pagescript/**/js/main.js',{
+//				base: 'static/wmp'
+//			})
+//			.pipe(rename(function(path){
+//				console.log(path);
+//			}))
+//			.pipe(requirejsOptimize(function(file){
+//				var url = file.history[1].replace('','');
+//				console.log(url);
+//				return {
+//					baseUrl: './static/wmp',
+//					name: url,
+//					out: '',
+//					paths: {
+//						jquery: 'common/jquery/jquery-2.1.4.min'
+//					}
+//				};
+//			}))
+//			.pipe(gulp.dest('test2'));
+//});

@@ -1,0 +1,113 @@
+@import "@{static}/modules/base/less/page";
+@import "@{static}/modules/base/less/buttons";
+@import "@{static}/pagescript/base/less/base";
+.logo {
+	width: 90px;
+	height: 32px;
+	background: no-repeat center center data-uri("@{static}/modules/base/img/vi.png");
+	background-size: cover;
+	margin: 10px auto 0 auto;
+}
+
+.prompt {
+	margin: 15px auto 30px auto;
+	text-align: center;
+	color: @f2;
+	font-size: 13px;
+}
+
+.form {
+	margin-top: 30px;
+	input {
+		width: 100%;
+		height: 44px;
+		border: 1px solid @border;
+		border-radius: 5px;
+		padding: 10px;
+		color: @f1;
+		font-size: 15px;
+		.input-text {
+			color: @f3;
+			font-size: 15px;
+		}
+		&::-webkit-input-placeholder, &::-moz-placeholder  {
+			.input-text;			
+		} 
+	}
+	.districtNumber {
+	    position: absolute;
+	    width: 50px;
+	    height: 44px;
+	    line-height: 44px;
+	    text-align: center;
+	    font-size: 15px;
+	    color: @f3;
+	    border-right: 1px solid @border;
+	}
+	#tel-input {
+		padding-left: 60px;
+	}
+	.validation-code {
+		width: 100%;
+		margin: 10px 0 0;
+		position: relative;
+		.input-group-btn {
+			position: absolute;
+		    top: 0px;
+		    bottom: 0px;
+		    right: 0px;
+		    height: 44px;
+		    line-height: 44px;
+		    width: 100px;
+			&[disabled] {
+				.btn-send-code {
+					color: @f3;
+				}
+			}
+		}
+	}
+}
+
+.btn-send-code {
+	font-size: 14px;
+	.style {
+		border-left-width: 0;
+		color: @dc;
+		box-shadow: none;
+		border-color: @border !important;
+		-webkit-box-shadow: none;
+		background: @bg-1 !important;
+	}
+	.style;
+	&:before {
+		display: inline-block;
+		content: '|';
+		margin-right: 5px;
+		color: @border;
+	}
+	&:active,
+	&:visited {
+		.style;
+	}
+}
+
+.link {
+	display: block;
+	font-size: 13px;
+	margin-top: 15px;
+	text-align: center;
+	color: @dc;
+}
+
+
+.form-group:nth-child(3) {
+	margin-bottom: 0;
+}
+
+.msg {
+	font-size: 11px;
+	color: @ac;
+	text-align: center;
+	height: 25px;
+	line-height: 25px;
+}
