@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sca="http://www.springframework.org/schema/sca"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+            http://www.springframework.org/schema/sca http://www.springframework.org/schema/sca/spring-sca.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">
+        	<list>
+	            <value>classpath:jdbc.properties</value>
+	            <value>classpath:base.properties</value>
+        	</list>
+       </property>
+    </bean>
+	
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="jdbc:mysql://${jdbc.url}/${jdbc.database}?zeroDateTimeBehavior=convertToNull" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="acquireIncrement">
+			<value>3</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>5</value>
+		</property>
+		<property name="minPoolSize">
+			<value>5</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>50</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>600000</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>30</value>
+		</property>
+		<property name="maxStatements">
+			<value>100</value>
+		</property>
+		<property name="numHelperThreads">
+			<value>10</value>
+		</property>
+
+	</bean>
+	<bean id="dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc2.driver}" />
+		<property name="jdbcUrl" value="jdbc:mysql://${jdbc2.url}/${jdbc2.database}?zeroDateTimeBehavior=convertToNull" />
+		<property name="user" value="${jdbc2.username}" />
+		<property name="password" value="${jdbc2.password}" />
+		<property name="acquireIncrement">
+			<value>3</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>5</value>
+		</property>
+		<property name="minPoolSize">
+			<value>5</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>50</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>600000</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>30</value>
+		</property>
+		<property name="maxStatements">
+			<value>100</value>
+		</property>
+		<property name="numHelperThreads">
+			<value>10</value>
+		</property>
+
+	</bean>
+	
+	
+    <bean id="multipleDataSource" class="com.zhisland.main.apps.guanwang.dao.MultipleDataSource">
+        <property name="defaultTargetDataSource" ref="dataSource"/>
+        <property name="targetDataSources">
+            <map>
+                <entry key="defaultDataSource" value-ref="dataSource"/>
+                <entry key="cimDataSource" value-ref="dataSource2"/>
+            </map>
+        </property>
+    </bean>
+	
+    <!-- enable autowire -->
+    <context:annotation-config />
+
+    <!-- enable transaction demarcation with annotations -->
+    <tx:annotation-driven />
+
+	
+
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="multipleDataSource" />
+        <property name="typeAliasesPackage" value="com.zhisland.main.apps.guanwang.model" />
+		<property name="plugins">
+			<array>
+				<bean class="com.zhisland.main.apps.guanwang.dao.interceptor.DataSourceInterceptor"/>
+				<bean class="com.zhisland.main.apps.guanwang.dao.interceptor.MybatisInterceptor"/>
+				<bean class="com.zhisland.main.apps.guanwang.dao.interceptor.PageInteceptor"/>
+			</array>
+		</property>
+    </bean>
+    
+	
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zhisland.main.apps.guanwang.dao.mybatis" />
+    </bean>
+    <!-- dao -->
+
+ 	<!-- service -->
+ 	
+ 	
+</beans>

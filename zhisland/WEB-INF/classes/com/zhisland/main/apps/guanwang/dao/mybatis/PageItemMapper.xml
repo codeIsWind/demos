@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhisland.main.apps.guanwang.dao.mybatis.PageItemMapper">
+	<resultMap id="pageItem" type="PageItem">
+		<id property="id" column="id" />
+		<result property="categoryId" column="category_id" />
+		<result property="name" column="name" />
+		<result property="title" column="title" />
+		<result property="image" column="image" />
+		<result property="summary" column="summary" />
+		<result property="content" column="content" />
+		<result property="height" column="height" />
+		<result property="bgColor" column="bg_color" />
+		<result property="descFont" column="desc_font" />
+		<result property="linkUrl" column="link_url" />
+		<result property="sort" column="sort" />
+		<result property="styleAttrs" column="style_attrs" />
+		<result property="extendAttrs" column="extend_attrs" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, category_id, name, title, image, summary, content,
+		height, bg_color,
+		desc_font,
+		link_url, sort,style_attrs,extend_attrs, is_deleted,create_time,
+		update_time
+	</sql>
+	<cache-ref namespace="com.zhisland.main.apps.guanwang.dao.mybatis.PageMapper"/>
+	
+	<select id="getOne" resultMap="pageItem" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM tb_page_item
+		WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="getValidListByCategory" resultMap="pageItem">
+		SELECT
+		*
+		FROM
+		tb_page_item
+		WHERE category_id =#{categoryId,jdbcType=INTEGER}
+		and is_deleted=0
+		ORDER BY sort limit #{from},#{limit}
+	</select>
+	
+	<select id="countValidListByCategory" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		tb_page_item
+		WHERE category_id =#{categoryId,jdbcType=INTEGER}
+		and is_deleted=0
+	</select>
+	
+	<select id="getValidListByCategoryTypeAndPage" resultMap="pageItem">
+		SELECT
+		it.*
+		FROM
+		tb_page_item it,tb_page_category ca
+		WHERE it.category_id=ca.id
+		and ca.en_name=#{enName,jdbcType=VARCHAR}
+		<if test="pageId != null">
+			and ca.page_id=#{pageId,jdbcType=INTEGER}
+		</if>
+		and it.is_deleted=0
+		and ca.is_deleted=0
+		ORDER BY it.sort,id desc limit #{from},#{limit}
+	</select>
+	
+	<select id="countValidListByCategoryTypeAndPage" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		tb_page_item it,tb_page_category ca
+		WHERE it.category_id=ca.category_id
+		and ca.en_name=#{enName,jdbcType=VARCHAR}
+		<if test="pageId != null">
+			ca.page_id=#{pageId,jdbcType=INTEGER}
+		</if>
+		and it.is_deleted=0
+		and ca.is_deleted=0
+	</select>
+
+
+
+
+</mapper>
+

@@ -1,0 +1,9 @@
+STATIC_HOST=http://test.www.zhisland.com
+STATIC_VERSION=1
+REDIS_HOST=192.168.2.90
+REDIS_PORT=6379
+
+SERVLET_URL=http://192.168.2.91:8094
+SMSSERVLET_URL=http://192.168.2.91:8171
+
+rmi.search_host1=search.www.zhisland.com:9121

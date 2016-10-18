@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhisland.main.apps.guanwang.dao.mybatis.UserPraiseMapper">
+	<resultMap id="BaseResultMap" type="UserPraise">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="object_type" property="objectType" jdbcType="VARCHAR" />
+		<result column="object_id" property="objectId" jdbcType="BIGINT" />
+		<result column="praise_count" property="count" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		Id,object_type,object_id,praise_count
+	</sql>
+	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+	<select id="getOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from user_praise
+		where id=#{id,jdbcType=BIGINT}
+	</select>
+	
+	<insert id="save" >
+		insert into user_praise
+		(<include refid="Base_Column_List" />)
+		 values (#{id,jdbcType=BIGINT}, 
+		#{objectType,jdbcType=VARCHAR}, 
+      	#{objectId,jdbcType=BIGINT},
+      	#{count,jdbcType=INTEGER})
+	</insert>
+	
+	<select id="getByObjectId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_praise
+		where 
+		object_type=#{objectType,jdbcType=VARCHAR}
+		and object_id=#{objectId,jdbcType=BIGINT}
+	</select>
+
+</mapper>

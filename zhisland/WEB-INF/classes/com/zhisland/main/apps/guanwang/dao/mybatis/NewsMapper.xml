@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhisland.main.apps.guanwang.dao.mybatis.NewsMapper">
+	<resultMap id="BaseResultMap" type="News">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="publisher" property="publisher" jdbcType="VARCHAR" />
+		<result column="source_from" property="sourceFrom" jdbcType="VARCHAR" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_published" property="isPublished" jdbcType="TINYINT" />
+		<result column="is_deleted" property="isDeleted" jdbcType="TINYINT" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, category_id,title, type, publisher, source_from,
+		image,summary,content, publish_time, create_time,
+		update_time,is_published,is_deleted
+	</sql>
+	<cache-ref namespace="com.zhisland.main.apps.guanwang.dao.mybatis.PageMapper"/>
+
+	<select id="getOne" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_news
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="count" resultType="int" parameterType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		tb_news
+		where is_deleted=0
+		and is_published=1
+	</select>
+	
+	<select id="list" resultMap="BaseResultMap" parameterType="News">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		tb_news 
+		where is_deleted=0
+		and is_published=1
+		ORDER BY publish_time DESC
+		LIMIT
+		#{offset},#{count}
+	</select>
+	
+	<select id="listByCategory" resultMap="BaseResultMap" parameterType="News">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		tb_news 
+		where is_deleted=0
+		and is_published=1
+		and category_id =#{categoryId,jdbcType=INTEGER}
+		ORDER BY publish_time DESC
+		LIMIT
+		#{offset},#{count}
+	</select>
+
+	<select id="countByCategory" resultType="int" parameterType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		tb_news
+		where is_deleted=0
+		and is_published=1
+		and category_id =#{categoryId,jdbcType=INTEGER}
+	</select>
+
+	
+</mapper>
